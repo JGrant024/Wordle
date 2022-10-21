@@ -1,43 +1,36 @@
-from functools import update_wrapper
 import random
-from tkinter import E
-from turtle import position
+from colorama import Fore, Back, Style
+from word_list import words
 
-
-def processGuess(theAnswer, theGuess):
-    position = 0
-    clue = ""
-    for letter in theGuess:
-        if letter == theAnswer[position]:
-            clue += ""
-        elif letter in theAnswer:
-            clue += ""
-        else:
-            clue += "_"
-        position += 1
-    print(clue)
-    return clue == guessed_corretly  # True if correct it is false otherwise.
-
-
-# Where the words are stored in a list
-word_list = []
-word_file = open('words.txt')
-for word in word_file:
-    word_list.append(word.strip())  # removes white line space
-
-
-# Choose a random word
-answer = random.choice(word_list)
-
+random_word = random.choice(words).upper()
 num_of_guesses = 0
-guessed_corretly = False
 
-# start of while loop
-while num_of_guesses < 6 and not guessed_corretly:
-    # get guess from player
-    guess = input('Enter a 5 letter word and press enter: ')
-    print('You have guess', guess)
+while num_of_guesses < 5:
     num_of_guesses += 1
+    guess = input('Enter a 5 letter word and press enter: ').upper()
+    # guess = 'CHEAP'
+    # ['C', 'L', 'O', 'T', 'H']
+    random_word_list = [letter for letter in random_word]
+    display_values = []
 
-    # process the guess from the player
-    guessed_corretly = processGuess(answer, guess)
+    for index, letter in enumerate(guess):
+        if random_word_list[index] == letter:
+            display_values.append(letter.upper())
+            random_word_list[index] = '_'  # ['_', 'L', 'O', 'T', 'H']
+        elif letter in random_word_list:
+            display_values.append(letter.lower())
+            index = random_word_list.index(letter)
+            random_word_list[index] = '_'  # ['_', 'L', 'O', 'T', '_']
+        else:
+            display_values.append('*')
+
+    display = " ".join(display_values)
+    print(display)
+
+    if guess == random_word:
+        print('Congratulations! You won!')
+        break
+
+    if num_of_guesses == 5:
+        print('You lose. You ran out of guesses!')
+        print(f'The word was {random_word}.')
