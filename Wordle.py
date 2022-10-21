@@ -1,4 +1,6 @@
+from functools import update_wrapper
 import random
+from tkinter import E
 from turtle import position
 
 
@@ -7,21 +9,22 @@ def processGuess(theAnswer, theGuess):
     clue = ""
     for letter in theGuess:
         if letter == theAnswer[position]:
-            clue += "G"
+            clue += ""
         elif letter in theAnswer:
-            clue += "Y"
+            clue += ""
         else:
             clue += "_"
         position += 1
     print(clue)
-    return clue == "GGGGG"
+    return clue == guessed_corretly  # True if correct it is false otherwise.
 
 
 # Where the words are stored in a list
 word_list = []
-word_file = open('wordlist.txt')
+word_file = open('words.txt')
 for word in word_file:
-    word_list.append(word.strip())
+    word_list.append(word.strip())  # removes white line space
+
 
 # Choose a random word
 answer = random.choice(word_list)
